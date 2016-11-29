@@ -11,8 +11,13 @@ package simplexmethod;
  */
 public class Main {
     public static void main(String[] args) {
-        Window w = new Window();
-        w.setVisible(true);
+        Runnable runnable = new Runnable() {
+            public void run() {
+                Window w = new Window();
+            }
+        };
+        
+        runnable.run();
        
     }
 }
