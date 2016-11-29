@@ -5,38 +5,78 @@
  */
 package simplexmethod;
 
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
 /**
  *
  * @author jo1nsaint
  */
 public class Window extends JFrame{
-
-    private JTextField x11, x12, x13, x21, x22, x23, x31, x32, x33;
-    private JPanel x1, x2, x3;
-    private JComboBox choiseRestrictionX1, choiseRestrictionX2, choiseRestrictionX3;
-    private String[] choise = {">=", "<=", "="}; 
-    private JTextField b1, b2, b3;
-    private JTextField valueX1, valueX2, valueX3; //answer the simplex
-    private JTextField Fx1, Fx2, Fx3;
-    private JComboBox minOrMax;
-    private String[] choiseMinOrMax = {"максимальное (max)", "минимальное (min)"};
+    
+    private JPanel entryFunctions;
+    private JPanel logPanel;
+    
+    private JTextField entryValue; // Количество переменных
+    private JTextField entryRestrictions;// количество ограничений
+    
+    private JLabel text1, text2;
+    
+    private JButton btnOk1;
     
     public Window() throws HeadlessException {
     
         setTitle("Simplex Method");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+        setBounds(450, 200, 800, 500);
         
         
+        
+        add(createRestrictionsPane());
         
     }
     
     
+    private JPanel createRestrictionsPane(){
+        
+        JPanel entryRestrictionsPanel = new JPanel(null);
+        entryRestrictionsPanel.setBorder(new TitledBorder("Ввод значений: "));
+        entryRestrictionsPanel.setBounds(20, 10, 400, 250);
+        
+        text1 = new JLabel("Введите количество переменных = ");
+        text1.setBounds(30, 30, 300, 30);
+        
+        text2 = new JLabel("Введите количество ограничений = ");
+        text2.setBounds(30, 50, 300, 30);
+        
+        entryValue = new JTextField();
+        entryValue.setBounds(290, 35, 50, 20);
+        
+        entryRestrictions = new JTextField();
+        entryRestrictions.setBounds(290, 58, 50, 20);
+        
+        btnOk1 = new JButton("Расчитать");
+        btnOk1.setBounds(30, 80, 150, 30);
+        
+        entryRestrictionsPanel.add(text1);
+        entryRestrictionsPanel.add(text2);
+        entryRestrictionsPanel.add(entryValue);
+        entryRestrictionsPanel.add(entryRestrictions);
+        entryRestrictionsPanel.add(btnOk1);
+        
+        return entryRestrictionsPanel;
+    }
     
     
     

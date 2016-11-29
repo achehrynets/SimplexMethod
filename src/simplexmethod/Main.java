@@ -5,20 +5,14 @@
  */
 package simplexmethod;
 
-import javax.swing.JLabel;
-
 /**
  *
  * @author jo1nsaint
  */
-public class SimplexMethod {
-
-    /**
-     * @param args the command line arguments
-     */
-    
+public class Main {
     public static void main(String[] args) {
-    
+        Window w = new Window();
+        w.setVisible(true);
+       
     }
-    
 }
