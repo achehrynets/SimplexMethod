@@ -217,10 +217,13 @@ public class Window {
                 panel.add(xIJ);
             }
         }
-        
-        
-        mainWindow.add(panel);
        
+        JButton btn2 = new JButton();
+        btn2.setText("Решить");
+        btn2.setBounds(60, 220, 140, 30);
+        
+        panel.add(btn2);
+        
         return panel;
     }
     
