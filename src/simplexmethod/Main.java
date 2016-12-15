@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         Runnable runnable = new Runnable() {
             public void run() {
-                Window w = new Window();
+                MainWindow w = new MainWindow();
             }
         };
         

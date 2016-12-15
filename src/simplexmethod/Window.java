@@ -20,6 +20,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.TitledBorder;
 
 /**
@@ -28,9 +30,12 @@ import javax.swing.border.TitledBorder;
  */
 public class Window {
     
+    public static final String EOL = System.lineSeparator(); 
+    double[] functionResult = new double[8];
+    double result;
+    String[] animals = {"Куры = ", "Овцы = ", "Лягушки = ", "Конина = "};
     private JFrame mainWindow;
     
-    //private JPanel entryFunctions;
     private JPanel logPanel;
     private JPanel panel; 
     
@@ -40,12 +45,11 @@ public class Window {
     private JTextField entryRestrictions;// количество ограничений
     
     private JTextField xIJ = null; // значения для матрицы свободных членов и переменных
-       
+    
     private JTextArea log;
     private JScrollPane scroll; // scroll for log
     
     private JLabel text1, text2, textFunction;
-    private JLabel printX;
     private JLabel example1;
     private JLabel example2;
     
@@ -63,6 +67,9 @@ public class Window {
     private double matr[][];
     private double functionVector[];
     
+    private int[] setXForAnimals = {80, 135, 185, 255};
+    private String[] setLabelNameForAnimals = {"Куры", "Овцы", "Лягушки", "Конь"};
+        
     public Window(){
         
         mainWindow = new JFrame();
@@ -71,6 +78,12 @@ public class Window {
         mainWindow.setLayout(null);
         mainWindow.setBounds(450, 200, 800, 500);
         mainWindow.setResizable(false);
+        
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
+            System.out.println("Error in window component : " + e);
+        }
         
         mainWindow.add(createRestrictionsPane());
         mainWindow.add(createLogPanel());
@@ -85,20 +98,20 @@ public class Window {
         entryRestrictionsPanel.setBorder(new TitledBorder("Ввод значений: "));
         entryRestrictionsPanel.setBounds(20, 10, 400, 150);
         
-        text1 = new JLabel("Введите количество переменных = ");
-        text1.setBounds(30, 30, 300, 30);
+        text1 = new JLabel("Введите количество видов = ");
+        text1.setBounds(30, 30, 300, 40);
         
-        text2 = new JLabel("Введите количество ограничений = ");
-        text2.setBounds(30, 50, 300, 30);
+        text2 = new JLabel("Введите количество предприятий = ");
+        text2.setBounds(30, 70, 300, 40);
         
         entryValue = new JTextField();
-        entryValue.setBounds(290, 35, 50, 20);
+        entryValue.setBounds(290, 35, 50, 30);
         
         entryRestrictions = new JTextField();
-        entryRestrictions.setBounds(290, 58, 50, 20);
+        entryRestrictions.setBounds(290, 75, 50, 30);
         
         btnOk1 = new JButton("Расчитать");
-        btnOk1.setBounds(30, 80, 150, 30);
+        btnOk1.setBounds(30, 110, 150, 30);
         
         btnOk1.addMouseListener(new MouseAdapter() {
                     @Override
@@ -113,7 +126,7 @@ public class Window {
                                     
                                 }    
                                 else{
-                                    
+                                    try{
                                     n = Integer.valueOf(entryValue.getText());
                                     m = Integer.valueOf(entryRestrictions.getText());
                                 
@@ -121,7 +134,10 @@ public class Window {
                                 
                                     mainWindow.add(addFunctionsField());
                                     mainWindow.repaint();
-                                    
+                                    }
+                                    catch(NumberFormatException | NullPointerException msg){
+                                        System.out.println("Err-5 in entry data :" + msg);
+                                    }
                                 }
                             } catch (IllegalArgumentException ex) {
                                 System.out.println("Err-1 in btn1 :" + ex);
@@ -157,6 +173,14 @@ public class Window {
         scroll.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
         scroll.setBounds(10, 25, 300, 425);
         
+        log.append("B - количество дней на заказ");
+        log.append(EOL);
+        log.append("Колонки - время роста живности");
+        log.append(EOL);
+        log.append("Cтроки - предприятия и их заказ");
+        log.append(EOL);
+        
+        
         logPanel.add(scroll);
        
         return logPanel;
@@ -166,12 +190,7 @@ public class Window {
         
        panel = new JPanel(null);
        panel.setBorder(new TitledBorder("Ввод значений"));
-       panel.setBounds(20, 170, 400, 300);
-       
-       textFunction = new  JLabel("F(x) = ");
-       textFunction.setBounds(30, 15, 150, 30);
-       
-       panel.add(textFunction);
+       panel.setBounds(20, 170, 400, 300);       
        
        number = 1;
        
@@ -180,23 +199,18 @@ public class Window {
        for (int i = 0; i < n; i++) {
             
             x = new JTextField();
-            x.setBounds(75 + i * 60, 20, 40, 20);
-            
-            printX = new JLabel();
-            printX.setBounds(118 + i * 60, 20, 20, 20);
-            printX.setText("x" + number);
+            x.setBounds(78 + i * 60, 40, 40, 30);
             
             linksFunctionValue[i] = x;
             
             panel.add(x);
-            panel.add(printX);
             
             number++;
        }
         
 
         minOrMax = new JComboBox(minOrMaxValue);
-        minOrMax.setBounds(330, 20, 55, 20);
+        minOrMax.setBounds(320, 25, 75, 25);
         minOrMax.addActionListener((e) -> {
             
             int choise = minOrMax.getSelectedIndex();
@@ -208,28 +222,24 @@ public class Window {
         
         panel.add(minOrMax);
                 
-        example1 = new JLabel();
-        example1.setText("Введите значения согласно примеру: ");
-        example1.setBounds(20, 50, 300, 20);
+        JLabel price = new JLabel("Прибыль: ");
+        price.setBounds(5, 15, 75, 30);
+        panel.add(price);
+           
+        JLabel animal = new JLabel();
         
-        example2 = new JLabel();
-        example2.setText("x1 + x2 + ... + xn = b");
-        example2.setBounds(60, 70, 200, 20);
-        
-        panel.add(example1);
-        panel.add(example2);
-        
-        
-
         for(int i = 0; i < m; i++ ){
-
+    
+            animal = new JLabel(setLabelNameForAnimals[i]);
+            animal.setBounds(setXForAnimals[i], 15, 70, 30);
+            panel.add(animal);
             for(int j = 0; j < n + 1; j++){
                 
                 xIJ = new JTextField();
-                xIJ.setBounds(60 + j * 60, 100 + i * 40, 40, 20);
+                xIJ.setBounds(60 + j * 60, 100 + i * 40, 40, 30);
                 
                 linksMatrValue[i][j] = xIJ;
-                
+           
                 panel.add(xIJ);
             }
         }
@@ -239,6 +249,7 @@ public class Window {
         btn2.setBounds(200, 260, 140, 30);
         
         btn2.addActionListener((ActionEvent e) -> {
+            
             matr = new double [4][8];
             functionVector = new double[8];
             initArr(matr, functionVector);
@@ -247,10 +258,21 @@ public class Window {
             System.out.println(Arrays.toString(functionVector));
             SimplexMethod simplex = new SimplexMethod(matr, functionVector);
             
-            double[] functionResult = simplex.justDoIt();
-            double result = simplex.mainResult(functionResult);
+            functionResult = simplex.justDoIt();
+            result = simplex.mainResult(functionResult);
+            log.append(EOL);
+            log.append("Время роста:");
+            
+            log.append(EOL);
+            for(int i = 0; i < 4; i++) {
+                log.append(animals[i] + functionResult[i]);
+                log.append(EOL);
+                
+            }
+            log.append("Вы получите прибыль = " + result);
             System.out.println(Arrays.toString(functionResult));
             System.out.println(result);
+            
        });
         
         panel.add(btn2);
@@ -268,8 +290,6 @@ public class Window {
     }
     
     public void getValue(double [][] arr, double [] function) {
-        
-        int temp = 0;
         
         for(int i = 0; i < m; i++) {
             arr[i][7] = Double.valueOf(linksMatrValue[i][n].getText());
