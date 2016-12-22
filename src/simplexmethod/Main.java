@@ -10,14 +10,15 @@ package simplexmethod;
  * @author jo1nsaint
  */
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         Runnable runnable = new Runnable() {
             public void run() {
                 MainWindow w = new MainWindow();
             }
         };
         
-        runnable.run();
-       
+        runnable.run();    
     }
+
 }
+

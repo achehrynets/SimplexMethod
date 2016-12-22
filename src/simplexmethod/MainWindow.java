@@ -79,14 +79,18 @@ public class MainWindow {
             switch(choiseMethod.getSelectedIndex()) {
                 case 0: {
                     window.setVisible(false);
-                    Window simplexMethod = new Window();
+                    SimplexMethodWindow simplexMethod = new SimplexMethodWindow();
                     break;
                 }
                 case 1: {
-                    //TODO: T-task
+                    window.setVisible(false);
+                    TransportProblemWindow transportProblem = new TransportProblemWindow();
+                    break;
                 }
                 case 2: {
-                    //TODO: Vengersk
+                    window.setVisible(false);
+                    HungarianMethodWindow hungarianMethodWindow = new HungarianMethodWindow();
+                    break;
                 }
             }
         });
